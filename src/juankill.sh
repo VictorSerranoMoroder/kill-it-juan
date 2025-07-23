@@ -1,7 +1,5 @@
 #!/bin/bash
 
-SIGNAL=$1
-PID=$2
 SOUND="/usr/local/share/juankill/matala_juan.wav"
 
 # Function: show usage
@@ -10,10 +8,13 @@ usage() {
     exit 1
 }
 
-# Validate arguments
-if [[ -z "$SIGNAL" || -z "$PID" ]]; then
+# Check argument count
+if [[ $# -ne 2 ]]; then
     usage
 fi
+
+SIGNAL="$1"
+TARGET="$2"
 
 # Check if signal format is coherent, accepts both -9 and -TERM
 if ! [[ "$SIGNAL" =~ ^-[0-9]+$ || "$SIGNAL" =~ ^-[A-Z]+$ ]]; then
@@ -22,15 +23,21 @@ if ! [[ "$SIGNAL" =~ ^-[0-9]+$ || "$SIGNAL" =~ ^-[A-Z]+$ ]]; then
 fi
 
 # Check if PID is a number
-if ! [[ "$PID" =~ ^[0-9]+$ ]]; then
-    echo "Parameter error: PID must be a number"
-    usage
+if [[ "$PROCESS" =~ ^[0-9]+$ ]]; then
+    # Check if PID exists
+    if kill -0 "$PID" 2>/dev/null; then
+        paplay $SOUND &
+        sudo kill "$SIGNAL" "$TARGET"
+    else
+        echo "Process $TARGET does not exist."
+    fi
+else
+    # Check if the process exists
+    if pgrep -x "$TARGET" >/dev/null; then
+        paplay $SOUND &
+        sudo pkill "$SIGNAL" -x "$TARGET"
+    else
+        echo "No running process found with name: $TARGET"
+    fi
 fi
 
-# Check if PID exists
-if kill -0 "$PID" 2>/dev/null; then
-    paplay $SOUND &
-    sudo kill "$SIGNAL" "$PID"
-else
-    echo "Process $PID does not exist."
-fi

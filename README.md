@@ -16,4 +16,9 @@ juankill -9 12345
 juankill -SIGKILL 12345
 ```
 
+It also supports pkill-like usage:
+```
+juankill -9 mylovelyprocess
+```
+
 It will kill your chosen process very politely.
