@@ -1,6 +1,6 @@
 # kill-it-juan
 
-Kill it juan is a wrapper around the kill command, but plays a funny moment of *Aqui No Hay Quien Viva* along while killing your process. Think of it as just saying please while your are sudoing your kill -9.
+Kill it juan is a wrapper around the kill command, but plays a [funny moment of *Aqui No Hay Quien Viva*](https://www.youtube.com/watch?v=0m2dxv8p7ts) along while killing your process. Think of it as just saying please while your are sudoing your kill -9.
 
 ## Installation
 Clone this repository and execute the install script with sudo:
